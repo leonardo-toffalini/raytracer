@@ -4,7 +4,22 @@
 #include <iostream>
 #include <ostream>
 
+bool hit_sphere(const point3 &center, const double radius, const ray &r) {
+  vec3 oc = center - r.origin();
+  double a = dot(r.direction(), r.direction());
+  double b = -2 * dot(r.direction(), oc);
+  double c = dot(oc, oc )- (radius * radius);
+  double disc = b * b - 4 * a * c;
+  return (disc >= 0);
+}
+
 color ray_color(ray &r) {
+  point3 sphere_center = point3(0, 0, -1);
+  double sphere_radius = 0.5;
+  if (hit_sphere(sphere_center, sphere_radius, r)) {
+    return color(1, 0, 0);
+  }
+
   vec3 unit_direction = unit_vector(r.direction());
   auto a = 0.5 * (unit_direction.y() + 1.0);
   return (1.0 - a) * color(1.0, 1.0, 1.0) + a * color(0.5, 0.7, 1.0);
