@@ -1,23 +1,32 @@
 #include "color.h"
 #include "ray.h"
 #include "vec3.h"
+#include <cmath>
 #include <iostream>
 #include <ostream>
 
-bool hit_sphere(const point3 &center, const double radius, const ray &r) {
+double hit_sphere(const point3 &center, const double radius, const ray &r) {
   vec3 oc = center - r.origin();
-  double a = dot(r.direction(), r.direction());
-  double b = -2 * dot(r.direction(), oc);
-  double c = dot(oc, oc )- (radius * radius);
-  double disc = b * b - 4 * a * c;
-  return (disc >= 0);
+  double a = r.direction().length_squared();
+  double h = dot(r.direction(), oc);
+  double c = oc.length_squared() - (radius * radius);
+  double disc = h * h - a * c;
+
+  if (disc < 0) {
+    return -1.0;
+  }
+
+  return (h - std::sqrt(disc)) / a;
 }
 
 color ray_color(ray &r) {
   point3 sphere_center = point3(0, 0, -1);
   double sphere_radius = 0.5;
-  if (hit_sphere(sphere_center, sphere_radius, r)) {
-    return color(1, 0, 0);
+  double t = hit_sphere(sphere_center, sphere_radius, r);
+
+  if (t > 0.0) {
+    vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1));
+    return 0.5 * color(N.x() + 1, N.y() + 1, N.z() + 1);
   }
 
   vec3 unit_direction = unit_vector(r.direction());
