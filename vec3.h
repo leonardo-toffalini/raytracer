@@ -41,6 +41,12 @@ public:
     return *this;
   }
 
+  bool near_zero() const {
+    double s = 1e-8;
+    return (std::fabs(e[0]) < s) && (std::fabs(e[1]) < s) &&
+           (std::fabs(e[2]) < s);
+  }
+
   double length_squared() const {
     return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
   }
@@ -113,4 +119,8 @@ inline vec3 random_on_hemisphere(const vec3 &normal) {
   } else {
     return -rand_unit;
   }
+}
+
+inline vec3 reflect(const vec3 &v, const vec3 &n) {
+  return v - 2 * dot(v, n) * n;
 }
