@@ -33,3 +33,5 @@
 
 # Project specific
 *.ppm
+
+*.DS_Store
