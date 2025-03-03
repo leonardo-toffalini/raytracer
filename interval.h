@@ -1,7 +1,5 @@
 #pragma once
 
-#include "rt_common.h"
-
 class interval {
 public:
   double min, max;

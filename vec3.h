@@ -1,9 +1,10 @@
 #pragma once
 
-#include "rt_common.h"
 #include <cmath>
-#include <iostream>
 #include <ostream>
+
+double random_double();
+double random_double(double min, double max);
 
 class vec3 {
 public:

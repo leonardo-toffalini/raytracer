@@ -1,10 +1,11 @@
+#include "rt_common.h"
+
 #include "bvh.h"
 #include "camera.h"
+#include "hittable.h"
 #include "hittable_list.h"
 #include "material.h"
-#include "rt_common.h"
 #include "sphere.h"
-#include <memory>
 
 color ray_color(ray &r, const hittable &world) {
   hit_record rec;

@@ -2,9 +2,6 @@
 
 #include "hittable.h"
 #include "material.h"
-#include "rt_common.h"
-#include "vec3.h"
-#include <ostream>
 
 class camera {
 private:

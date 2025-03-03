@@ -1,8 +1,6 @@
 #pragma once
 
-#include "hittable.h"
-#include "ray.h"
-#include "vec3.h"
+#include "rt_common.h"
 
 class material {
 public:

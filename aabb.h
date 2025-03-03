@@ -1,6 +1,5 @@
 #pragma once
 
-#include "interval.h"
 #include <stdexcept>
 
 class aabb {

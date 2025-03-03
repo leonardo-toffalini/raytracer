@@ -1,11 +1,9 @@
 #pragma once
 
+#include "aabb.h"
 #include "hittable.h"
 #include "hittable_list.h"
-#include "interval.h"
-#include <cstddef>
-#include <memory>
-#include <vector>
+
 #include <algorithm>
 
 class bvh_node : public hittable {

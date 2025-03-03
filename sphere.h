@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hittable.h"
+#include "rt_common.h"
 
 class sphere : public hittable {
 private:

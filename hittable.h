@@ -1,7 +1,6 @@
 #pragma once
 
 #include "aabb.h"
-#include "rt_common.h"
 
 class material;
 
