@@ -4,6 +4,9 @@
 #include "rt_common.h"
 
 class hittable_list : public hittable {
+private:
+  aabb bbox;
+
 public:
   std::vector<shared_ptr<hittable>> objects;
 
@@ -12,7 +15,12 @@ public:
 
   void clear() { objects.clear(); }
 
-  void add(shared_ptr<hittable> object) { objects.push_back(object); }
+  void add(shared_ptr<hittable> object) {
+    objects.push_back(object);
+    bbox = aabb(bbox, object->bounding_box());
+  }
+
+  aabb bounding_box() const override { return bbox; }
 
   bool hit(const ray &r, interval ray_t, hit_record &rec) const override {
     hit_record temp_rec;
