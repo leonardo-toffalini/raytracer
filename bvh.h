@@ -1,9 +1,6 @@
 #pragma once
 
-#include "aabb.h"
-#include "hittable.h"
-#include "hittable_list.h"
-
+#include "rt_common.h"
 #include <algorithm>
 
 class bvh_node : public hittable {
@@ -40,7 +37,12 @@ public:
 
   bvh_node(std::vector<shared_ptr<hittable>> &objects, size_t start,
            size_t end) {
-    int axis = random_int(0, 2);
+    bbox = aabb::empty;
+
+    for (size_t object_index = start; object_index < end; object_index++)
+      bbox = aabb(bbox, objects[object_index]->bounding_box());
+
+    int axis = bbox.longest_axis();
     auto comparator = box_x_compare;
     if (axis == 1)
       comparator = box_y_compare;
@@ -62,8 +64,6 @@ public:
       left = make_shared<bvh_node>(objects, start, mid);
       right = make_shared<bvh_node>(objects, mid, end);
     }
-
-    bbox = aabb(left->bounding_box(), right->bounding_box());
   }
 
   bool hit(const ray &r, interval ray_t, hit_record &rec) const override {

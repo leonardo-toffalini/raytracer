@@ -43,3 +43,4 @@ inline int random_int(int min, int max) {
 #include "vec3.h"
 #include "aabb.h"
 #include "hittable.h"
+#include "hittable_list.h"

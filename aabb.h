@@ -8,6 +8,8 @@ public:
 
   aabb() {}
 
+  aabb(const interval x, const interval y, const interval z) : x(x), y(y), z(z) {}
+
   aabb(const point3 &a, const point3 &b) {
     x = (a[0] <= b[0]) ? interval(a[0], b[0]) : interval(b[0], a[0]);
     y = (a[1] <= b[1]) ? interval(a[1], b[1]) : interval(b[1], a[1]);
@@ -60,4 +62,18 @@ public:
 
     return true;
   }
+
+  int longest_axis() const {
+    if (x.size() > y.size())
+      return x.size() > z.size() ? 0 : 2;
+    else
+      return y.size() > z.size() ? 1 : 2;
+  }
+
+  static const aabb empty, universe;
 };
+
+const aabb aabb::empty =
+    aabb(interval::empty, interval::empty, interval::empty);
+const aabb aabb::universe =
+    aabb(interval::universe, interval::universe, interval::universe);
