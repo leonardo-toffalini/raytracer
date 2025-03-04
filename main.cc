@@ -5,20 +5,63 @@
 #include "hittable.h"
 #include "hittable_list.h"
 #include "material.h"
+#include "quad.h"
 #include "sphere.h"
 
-color ray_color(ray &r, const hittable &world) {
-  hit_record rec;
-  if (world.hit(r, interval(0, infinity), rec)) {
-    return 0.5 * (rec.normal + color(1, 1, 1));
-  }
-
-  vec3 unit_direction = unit_vector(r.direction());
-  auto a = 0.5 * (unit_direction.y() + 1.0);
-  return (1.0 - a) * color(1.0, 1.0, 1.0) + a * color(0.5, 0.7, 1.0);
-}
+void first_cover();
+void quads();
 
 int main(void) {
+  switch (2) {
+  case 1:
+    first_cover();
+    break;
+  case 2:
+    quads();
+    break;
+  }
+}
+
+void quads() {
+  hittable_list world;
+
+  // Materials
+  auto left_red = make_shared<lambertian>(color(1.0, 0.2, 0.2));
+  auto back_green = make_shared<lambertian>(color(0.2, 1.0, 0.2));
+  auto right_blue = make_shared<lambertian>(color(0.2, 0.2, 1.0));
+  auto upper_orange = make_shared<lambertian>(color(1.0, 0.5, 0.0));
+  auto lower_teal = make_shared<lambertian>(color(0.2, 0.8, 0.8));
+
+  // Quads
+  world.add(make_shared<quad>(point3(-3, -2, 5), vec3(0, 0, -4), vec3(0, 4, 0),
+                              left_red));
+  world.add(make_shared<quad>(point3(-2, -2, 0), vec3(4, 0, 0), vec3(0, 4, 0),
+                              back_green));
+  world.add(make_shared<quad>(point3(3, -2, 1), vec3(0, 0, 4), vec3(0, 4, 0),
+                              right_blue));
+  world.add(make_shared<quad>(point3(-2, 3, 1), vec3(4, 0, 0), vec3(0, 0, 4),
+                              upper_orange));
+  world.add(make_shared<quad>(point3(-2, -3, 5), vec3(4, 0, 0), vec3(0, 0, -4),
+                              lower_teal));
+
+  camera cam;
+
+  cam.aspect_ratio = 1.0;
+  cam.image_width = 400;
+  cam.samples_per_pixel = 100;
+  cam.max_depth = 50;
+
+  cam.vfov = 80;
+  cam.lookfrom = point3(0, 0, 9);
+  cam.lookat = point3(0, 0, 0);
+  cam.vup = vec3(0, 1, 0);
+
+  cam.defocus_angle = 0;
+
+  cam.render(world);
+}
+
+void first_cover() {
   hittable_list world;
 
   auto ground_material = make_shared<lambertian>(color(0.5, 0.5, 0.5));
@@ -66,8 +109,8 @@ int main(void) {
   camera cam;
 
   cam.aspect_ratio = 16.0 / 9.0;
-  cam.image_width = 1200;
-  cam.samples_per_pixel = 500;
+  cam.image_width = 400;
+  cam.samples_per_pixel = 100;
   cam.max_depth = 50;
 
   cam.vfov = 20.0;

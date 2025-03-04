@@ -1,14 +1,32 @@
 #pragma once
 
+#include "rt_common.h"
 #include <stdexcept>
 
 class aabb {
+private:
+  void pad_to_minimums() {
+    // Adjust the AABB so that no side is narrower than some delta, padding if
+    // necessary.
+
+    double delta = 0.0001;
+    if (x.size() < delta)
+      x = x.expand(delta);
+    if (y.size() < delta)
+      y = y.expand(delta);
+    if (z.size() < delta)
+      z = z.expand(delta);
+  }
+
 public:
   interval x, y, z;
 
   aabb() {}
 
-  aabb(const interval x, const interval y, const interval z) : x(x), y(y), z(z) {}
+  aabb(const interval x, const interval y, const interval z)
+      : x(x), y(y), z(z) {
+    pad_to_minimums();
+  }
 
   aabb(const point3 &a, const point3 &b) {
     x = (a[0] <= b[0]) ? interval(a[0], b[0]) : interval(b[0], a[0]);
