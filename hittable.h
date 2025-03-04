@@ -11,6 +11,7 @@ public:
   shared_ptr<material> mat;
   double t;
   bool front_face;
+  double u, v;
 
   void set_face_normal(const ray &r, const vec3 &outward_normal) {
     // Set the hit record normal vector
