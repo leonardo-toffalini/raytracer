@@ -7,17 +7,30 @@
 #include "material.h"
 #include "quad.h"
 #include "sphere.h"
+#include "texture.h"
 
 void first_cover();
+void checkered_floor();
+void checkered_spheres();
 void quads();
+void earth();
 
 int main(void) {
-  switch (2) {
+  switch (5) {
   case 1:
     first_cover();
     break;
   case 2:
     quads();
+    break;
+  case 3:
+    checkered_floor();
+    break;
+  case 4:
+    checkered_spheres();
+    break;
+  case 5:
+    earth();
     break;
   }
 }
@@ -44,6 +57,9 @@ void quads() {
   world.add(make_shared<quad>(point3(-2, -3, 5), vec3(4, 0, 0), vec3(0, 0, -4),
                               lower_teal));
 
+  auto material3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.0);
+  world.add(make_shared<sphere>(point3(1, -1, 0), 2.0, material3));
+
   camera cam;
 
   cam.aspect_ratio = 1.0;
@@ -53,6 +69,59 @@ void quads() {
 
   cam.vfov = 80;
   cam.lookfrom = point3(0, 0, 9);
+  cam.lookat = point3(0, 0, 0);
+  cam.vup = vec3(0, 1, 0);
+
+  cam.defocus_angle = 0;
+
+  cam.render(world);
+}
+
+void checkered_floor() {
+  hittable_list world;
+  auto checker = make_shared<checker_texture>(0.32, color(0.2, 0.3, 0.1),
+                                              color(0.9, 0.9, 0.9));
+  world.add(make_shared<sphere>(point3(0, -1000, 0), 1000,
+                                make_shared<lambertian>(checker)));
+
+  camera cam;
+
+  cam.aspect_ratio = 16.0 / 9.0;
+  cam.image_width = 400;
+  cam.samples_per_pixel = 100;
+  cam.max_depth = 50;
+
+  cam.vfov = 20.0;
+  cam.lookfrom = point3(13, 2, 3);
+  cam.lookat = point3(0, 0, 0);
+  cam.vup = point3(0, 1, 0);
+
+  cam.defocus_angle = 0.6;
+  cam.focus_dist = 10.0;
+
+  cam.render(world);
+}
+
+void checkered_spheres() {
+  hittable_list world;
+
+  auto checker =
+      make_shared<checker_texture>(0.32, color(.2, .3, .1), color(.9, .9, .9));
+
+  world.add(make_shared<sphere>(point3(0, -10, 0), 10,
+                                make_shared<lambertian>(checker)));
+  world.add(make_shared<sphere>(point3(0, 10, 0), 10,
+                                make_shared<lambertian>(checker)));
+
+  camera cam;
+
+  cam.aspect_ratio = 16.0 / 9.0;
+  cam.image_width = 400;
+  cam.samples_per_pixel = 100;
+  cam.max_depth = 50;
+
+  cam.vfov = 20;
+  cam.lookfrom = point3(13, 2, 3);
   cam.lookat = point3(0, 0, 0);
   cam.vup = vec3(0, 1, 0);
 
@@ -122,4 +191,26 @@ void first_cover() {
   cam.focus_dist = 10.0;
 
   cam.render(world);
+}
+
+void earth() {
+  auto earth_texture = make_shared<image_texture>("earthmap.jpg");
+  auto earth_surface = make_shared<lambertian>(earth_texture);
+  auto globe = make_shared<sphere>(point3(0, 0, 0), 2, earth_surface);
+
+  camera cam;
+
+  cam.aspect_ratio = 16.0 / 9.0;
+  cam.image_width = 400;
+  cam.samples_per_pixel = 100;
+  cam.max_depth = 50;
+
+  cam.vfov = 20;
+  cam.lookfrom = point3(0, 0, 12);
+  cam.lookat = point3(0, 0, 0);
+  cam.vup = vec3(0, 1, 0);
+
+  cam.defocus_angle = 0;
+
+  cam.render(hittable_list(globe));
 }
