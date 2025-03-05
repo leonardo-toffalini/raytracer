@@ -13,8 +13,7 @@ private:
   double D;
 
 public:
-  quad(const point3 &Q, const vec3 &u, const vec3 &v, shared_ptr<material> mat)
-      : Q(Q), u(u), v(v), mat(mat) {
+  quad(const point3 &Q, const vec3 &u, const vec3 &v, shared_ptr<material> mat) : Q(Q), u(u), v(v), mat(mat) {
     vec3 n = cross(u, v);
     normal = unit_vector(n);
     D = dot(normal, Q);
@@ -69,3 +68,11 @@ public:
     return true;
   }
 };
+
+inline shared_ptr<hittable_list> box(const point3 &a, const point3 &b, shared_ptr<material> mat) {
+  auto sides = make_shared<hittable_list>();
+
+  auto min = point3(std::fmin(a.x(), b.x()), std::fmin(a.y(), b.y()), std::fmin(a.z(), b.z()));
+
+  return sides;
+}

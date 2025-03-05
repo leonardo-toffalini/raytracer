@@ -54,16 +54,11 @@ void quads() {
   auto lower_teal = make_shared<lambertian>(color(0.2, 0.8, 0.8));
 
   // Quads
-  world.add(make_shared<quad>(point3(-3, -2, 5), vec3(0, 0, -4), vec3(0, 4, 0),
-                              left_red));
-  world.add(make_shared<quad>(point3(-2, -2, 0), vec3(4, 0, 0), vec3(0, 4, 0),
-                              back_green));
-  world.add(make_shared<quad>(point3(3, -2, 1), vec3(0, 0, 4), vec3(0, 4, 0),
-                              right_blue));
-  world.add(make_shared<quad>(point3(-2, 3, 1), vec3(4, 0, 0), vec3(0, 0, 4),
-                              upper_orange));
-  world.add(make_shared<quad>(point3(-2, -3, 5), vec3(4, 0, 0), vec3(0, 0, -4),
-                              lower_teal));
+  world.add(make_shared<quad>(point3(-3, -2, 5), vec3(0, 0, -4), vec3(0, 4, 0), left_red));
+  world.add(make_shared<quad>(point3(-2, -2, 0), vec3(4, 0, 0), vec3(0, 4, 0), back_green));
+  world.add(make_shared<quad>(point3(3, -2, 1), vec3(0, 0, 4), vec3(0, 4, 0), right_blue));
+  world.add(make_shared<quad>(point3(-2, 3, 1), vec3(4, 0, 0), vec3(0, 0, 4), upper_orange));
+  world.add(make_shared<quad>(point3(-2, -3, 5), vec3(4, 0, 0), vec3(0, 0, -4), lower_teal));
 
   auto material3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.0);
   world.add(make_shared<sphere>(point3(1, -1, 0), 2.0, material3));
@@ -88,10 +83,8 @@ void quads() {
 
 void checkered_floor() {
   hittable_list world;
-  auto checker = make_shared<checker_texture>(0.32, color(0.2, 0.3, 0.1),
-                                              color(0.9, 0.9, 0.9));
-  world.add(make_shared<sphere>(point3(0, -1000, 0), 1000,
-                                make_shared<lambertian>(checker)));
+  auto checker = make_shared<checker_texture>(0.32, color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
+  world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, make_shared<lambertian>(checker)));
 
   camera cam;
 
@@ -115,13 +108,10 @@ void checkered_floor() {
 void checkered_spheres() {
   hittable_list world;
 
-  auto checker =
-      make_shared<checker_texture>(0.32, color(.2, .3, .1), color(.9, .9, .9));
+  auto checker = make_shared<checker_texture>(0.32, color(.2, .3, .1), color(.9, .9, .9));
 
-  world.add(make_shared<sphere>(point3(0, -10, 0), 10,
-                                make_shared<lambertian>(checker)));
-  world.add(make_shared<sphere>(point3(0, 10, 0), 10,
-                                make_shared<lambertian>(checker)));
+  world.add(make_shared<sphere>(point3(0, -10, 0), 10, make_shared<lambertian>(checker)));
+  world.add(make_shared<sphere>(point3(0, 10, 0), 10, make_shared<lambertian>(checker)));
 
   camera cam;
 
@@ -230,22 +220,18 @@ void earth() {
 void simple_light() {
   hittable_list world;
 
-  auto checker = make_shared<checker_texture>(0.32, color(0.2, 0.3, 0.1),
-                                              color(0.9, 0.9, 0.9));
-  world.add(make_shared<sphere>(point3(0, -1000, 0), 1000,
-                                make_shared<lambertian>(checker)));
-  world.add(make_shared<sphere>(point3(0, 2, 0), 2,
-                                make_shared<lambertian>(checker)));
+  auto checker = make_shared<checker_texture>(0.32, color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
+  world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, make_shared<lambertian>(checker)));
+  world.add(make_shared<sphere>(point3(0, 2, 0), 2, make_shared<lambertian>(checker)));
 
   auto difflight = make_shared<diffuse_light>(color(4, 4, 4));
-  world.add(make_shared<quad>(point3(3, 1, -2), vec3(2, 0, 0), vec3(0, 2, 0),
-                              difflight));
+  world.add(make_shared<quad>(point3(3, 3, -2), vec3(2, 0, 0), vec3(-1, 2, 0), difflight));
 
   camera cam;
 
   cam.aspect_ratio = 16.0 / 9.0;
-  cam.image_width = 400;
-  cam.samples_per_pixel = 100;
+  cam.image_width = 1200;
+  cam.samples_per_pixel = 500;
   cam.max_depth = 50;
   cam.background = color(0, 0, 0);
 
@@ -267,24 +253,20 @@ void cornell_box() {
   auto green = make_shared<lambertian>(color(.12, .45, .15));
   auto light = make_shared<diffuse_light>(color(15, 15, 15));
 
-  world.add(make_shared<quad>(point3(555, 0, 0), vec3(0, 555, 0),
-                              vec3(0, 0, 555), green));
-  world.add(make_shared<quad>(point3(0, 0, 0), vec3(0, 555, 0), vec3(0, 0, 555),
-                              red));
-  world.add(make_shared<quad>(point3(343, 554, 332), vec3(-130, 0, 0),
-                              vec3(0, 0, -105), light));
-  world.add(make_shared<quad>(point3(0, 0, 0), vec3(555, 0, 0), vec3(0, 0, 555),
-                              white));
-  world.add(make_shared<quad>(point3(555, 555, 555), vec3(-555, 0, 0),
-                              vec3(0, 0, -555), white));
-  world.add(make_shared<quad>(point3(0, 0, 555), vec3(555, 0, 0),
-                              vec3(0, 555, 0), white));
+  world.add(make_shared<quad>(point3(555, 0, 0), vec3(0, 555, 0), vec3(0, 0, 555), green));
+  world.add(make_shared<quad>(point3(0, 0, 0), vec3(0, 555, 0), vec3(0, 0, 555), red));
+  world.add(make_shared<quad>(point3(343, 554, 332), vec3(-130, 0, 0), vec3(0, 0, -105), light));
+  world.add(make_shared<quad>(point3(0, 0, 0), vec3(555, 0, 0), vec3(0, 0, 555), white));
+  world.add(make_shared<quad>(point3(555, 555, 555), vec3(-555, 0, 0), vec3(0, 0, -555), white));
+  world.add(make_shared<quad>(point3(0, 0, 555), vec3(555, 0, 0), vec3(0, 555, 0), white));
+
+  world.add(make_shared<sphere>(point3(222, 100, 200), 100, make_shared<dielectric>(1.5)));
 
   camera cam;
 
   cam.aspect_ratio = 1.0;
-  cam.image_width = 600;
-  cam.samples_per_pixel = 200;
+  cam.image_width = 800;
+  cam.samples_per_pixel = 10000;
   cam.max_depth = 50;
   cam.background = color(0, 0, 0);
 

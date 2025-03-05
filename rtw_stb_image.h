@@ -49,8 +49,7 @@ public:
     if (load("../../../../../../images/" + filename))
       return;
 
-    std::cerr << "ERROR: Could not load image file '" << image_filename
-              << "'.\n";
+    std::cerr << "ERROR: Could not load image file '" << image_filename << "'.\n";
   }
 
   ~rtw_image() {
@@ -66,10 +65,8 @@ public:
     // the image, followed by the next row below, for the full height of the
     // image.
 
-    auto n =
-        bytes_per_pixel; // Dummy out parameter: original components per pixel
-    fdata = stbi_loadf(filename.c_str(), &image_width, &image_height, &n,
-                       bytes_per_pixel);
+    auto n = bytes_per_pixel; // Dummy out parameter: original components per pixel
+    fdata = stbi_loadf(filename.c_str(), &image_width, &image_height, &n, bytes_per_pixel);
     if (fdata == nullptr)
       return false;
 

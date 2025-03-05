@@ -7,12 +7,9 @@ class material {
 public:
   virtual ~material() = default;
 
-  virtual color emitted(double u, double v, const point3 &p) const {
-    return color(0, 0, 0);
-  }
+  virtual color emitted(double u, double v, const point3 &p) const { return color(0, 0, 0); }
 
-  virtual bool scatter(const ray &r_in, const hit_record &rec,
-                       color &attenuation, ray &scattered) const {
+  virtual bool scatter(const ray &r_in, const hit_record &rec, color &attenuation, ray &scattered) const {
     return false;
   }
 };
@@ -25,8 +22,7 @@ public:
   lambertian(const color &albedo) : tex(make_shared<solid_color>(albedo)) {}
   lambertian(shared_ptr<texture> tex) : tex(tex) {}
 
-  bool scatter(const ray &r_in, const hit_record &rec, color &attenuation,
-               ray &scattered) const override {
+  bool scatter(const ray &r_in, const hit_record &rec, color &attenuation, ray &scattered) const override {
     vec3 scatter_direction = rec.normal + random_unit_vector();
 
     if (scatter_direction.near_zero())
@@ -44,11 +40,9 @@ private:
   double fuzz;
 
 public:
-  metal(const color &albedo, double fuzz)
-      : albedo(albedo), fuzz(fuzz < 1 ? fuzz : 1) {}
+  metal(const color &albedo, double fuzz) : albedo(albedo), fuzz(fuzz < 1 ? fuzz : 1) {}
 
-  bool scatter(const ray &r_in, const hit_record &rec, color &attenuation,
-               ray &scattered) const override {
+  bool scatter(const ray &r_in, const hit_record &rec, color &attenuation, ray &scattered) const override {
     vec3 reflected = reflect(r_in.direction(), rec.normal);
     reflected = unit_vector(reflected) + (fuzz * random_unit_vector());
     scattered = ray(rec.p, reflected);
@@ -73,8 +67,7 @@ private:
 public:
   dielectric(double refraction_index) : refraction_index(refraction_index) {}
 
-  bool scatter(const ray &r_in, const hit_record &rec, color &attenuation,
-               ray &scattered) const override {
+  bool scatter(const ray &r_in, const hit_record &rec, color &attenuation, ray &scattered) const override {
     attenuation = color(1.0, 1.0, 1.0);
     double ri = rec.front_face ? (1.0 / refraction_index) : refraction_index;
 
@@ -103,7 +96,5 @@ public:
   diffuse_light(shared_ptr<texture> tex) : tex(tex) {}
   diffuse_light(const color &emit) : tex(make_shared<solid_color>(emit)) {}
 
-  color emitted(double u, double v, const point3 &p) const override {
-    return tex->value(u, v, p);
-  }
+  color emitted(double u, double v, const point3 &p) const override { return tex->value(u, v, p); }
 };
