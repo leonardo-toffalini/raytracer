@@ -21,7 +21,7 @@ void ellipses();
 void cornell_box_with_boxes();
 
 int main(void) {
-  switch (10) {
+  switch (9) {
   case 1:
     first_cover();
     break;
@@ -377,6 +377,7 @@ void cornell_box_with_boxes() {
   auto white = make_shared<lambertian>(color(.73, .73, .73));
   auto green = make_shared<lambertian>(color(.12, .45, .15));
   auto light = make_shared<diffuse_light>(color(15, 15, 15));
+  auto glass = make_shared<dielectric>(1.5);
 
   world.add(make_shared<quad>(point3(555, 0, 0), vec3(0, 555, 0), vec3(0, 0, 555), green));
   world.add(make_shared<quad>(point3(0, 0, 0), vec3(0, 555, 0), vec3(0, 0, 555), red));
@@ -385,14 +386,21 @@ void cornell_box_with_boxes() {
   world.add(make_shared<quad>(point3(555, 555, 555), vec3(-555, 0, 0), vec3(0, 0, -555), white));
   world.add(make_shared<quad>(point3(0, 0, 555), vec3(555, 0, 0), vec3(0, 555, 0), white));
 
-  world.add(box(point3(130, 0, 65), point3(295, 165, 230), white));
-  world.add(box(point3(265, 0, 295), point3(430, 330, 460), white));
+  shared_ptr<hittable> box1 = box(point3(0, 0, 0), point3(165, 330, 165), white);
+  box1 = make_shared<rotate_y>(box1, 15);
+  box1 = make_shared<translate>(box1, vec3(265, 0, 295));
+  world.add(box1);
+
+  shared_ptr<hittable> box2 = box(point3(0, 0, 0), point3(165, 165, 165), glass);
+  box2 = make_shared<rotate_y>(box2, -18);
+  box2 = make_shared<translate>(box2, vec3(130, 0, 65));
+  world.add(box2);
 
   camera cam;
 
   cam.aspect_ratio = 1.0;
-  cam.image_width = 400;
-  cam.samples_per_pixel = 100;
+  cam.image_width = 800;
+  cam.samples_per_pixel = 500;
   cam.max_depth = 50;
   cam.background = color(0, 0, 0);
 
