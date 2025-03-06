@@ -120,6 +120,6 @@ public:
         write_color(std::cout, pixel_samples_scale * pixel_color);
       }
     }
-    std::clog << "\rDone              :\n";
+    std::clog << "\rDone                  \n";
   }
 };
