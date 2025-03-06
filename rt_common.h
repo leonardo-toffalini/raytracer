@@ -44,4 +44,4 @@ inline int random_int(int min, int max) {
 #include "aabb.h"
 #include "hittable.h"
 #include "hittable_list.h"
-#include "quad.h"
+#include "primitive.h"
