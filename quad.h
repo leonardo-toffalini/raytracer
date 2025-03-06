@@ -69,7 +69,6 @@ public:
   }
 };
 
-<<<<<<< HEAD
 class tri : public hittable {
 private:
   point3 Q;
@@ -81,8 +80,7 @@ private:
   double D;
 
 public:
-  tri(const point3 &Q, const vec3 &u, const vec3 &v, shared_ptr<material> mat)
-      : Q(Q), u(u), v(v), mat(mat) {
+  tri(const point3 &Q, const vec3 &u, const vec3 &v, shared_ptr<material> mat) : Q(Q), u(u), v(v), mat(mat) {
     vec3 n = cross(u, v);
     normal = unit_vector(n);
     D = dot(normal, Q);
@@ -91,8 +89,7 @@ public:
     set_bounding_box();
   }
 
-  tri(const point3 &A, const point3 &B, const point3 &C,
-      shared_ptr<material> mat, int unused) {
+  tri(const point3 &A, const point3 &B, const point3 &C, shared_ptr<material> mat, int unused) {
     // Construct a triangle from the three points, the int unused paramter is
     // there just for the signature to differentiate the two constructors
     Q = A;
@@ -145,11 +142,9 @@ public:
     return true;
   }
 
-  virtual bool is_interior(double a, double b, hit_record &rec) const {
-    return (a + b) <= 1 && a >= 0 && b >= 0;
-  }
+  virtual bool is_interior(double a, double b, hit_record &rec) const { return (a + b) <= 1 && a >= 0 && b >= 0; }
 };
-=======
+
 inline shared_ptr<hittable_list> box(const point3 &a, const point3 &b, shared_ptr<material> mat) {
   auto sides = make_shared<hittable_list>();
 
@@ -169,4 +164,3 @@ inline shared_ptr<hittable_list> box(const point3 &a, const point3 &b, shared_pt
 
   return sides;
 }
->>>>>>> 7d60cf9c0a1a055157925f6874a68fe11b941a0a

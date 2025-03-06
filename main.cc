@@ -16,14 +16,11 @@ void quads();
 void earth();
 void simple_light();
 void cornell_box();
-<<<<<<< HEAD
 void tris();
-=======
 void cornell_box_with_boxes();
->>>>>>> 7d60cf9c0a1a055157925f6874a68fe11b941a0a
 
 int main(void) {
-  switch (8) {
+  switch (9) {
   case 1:
     first_cover();
     break;
@@ -46,11 +43,10 @@ int main(void) {
     cornell_box();
     break;
   case 8:
-<<<<<<< HEAD
     tris();
-=======
+    break;
+  case 9:
     cornell_box_with_boxes();
->>>>>>> 7d60cf9c0a1a055157925f6874a68fe11b941a0a
     break;
   }
 }
@@ -105,27 +101,17 @@ void tris() {
   auto white = make_shared<lambertian>(color(1, 1, 1));
 
   // Tris
-  world.add(make_shared<tri>(point3(-3, -2, 5), vec3(0, 0, -4), vec3(0, 4, 0),
-                             left_red));
-  world.add(make_shared<tri>(point3(-2, -2, 0), vec3(4, 0, 0), vec3(0, 4, 0),
-                             back_green));
-  world.add(make_shared<tri>(point3(3, -2, 1), vec3(0, 0, 4), vec3(0, 4, 0),
-                             right_blue));
-  world.add(make_shared<tri>(point3(-2, 3, 1), vec3(4, 0, 0), vec3(0, 0, 4),
-                             upper_orange));
-  world.add(make_shared<tri>(point3(-2, -3, 5), vec3(4, 0, 0), vec3(0, 0, -4),
-                             lower_teal));
+  world.add(make_shared<tri>(point3(-3, -2, 5), vec3(0, 0, -4), vec3(0, 4, 0), left_red));
+  world.add(make_shared<tri>(point3(-2, -2, 0), vec3(4, 0, 0), vec3(0, 4, 0), back_green));
+  world.add(make_shared<tri>(point3(3, -2, 1), vec3(0, 0, 4), vec3(0, 4, 0), right_blue));
+  world.add(make_shared<tri>(point3(-2, 3, 1), vec3(4, 0, 0), vec3(0, 0, 4), upper_orange));
+  world.add(make_shared<tri>(point3(-2, -3, 5), vec3(4, 0, 0), vec3(0, 0, -4), lower_teal));
 
-  world.add(
-      make_shared<tri>(point3(-3, 2, 1), vec3(0, 0, 4), vec3(0, -4, 0), white));
-  world.add(
-      make_shared<tri>(point3(2, 2, 0), vec3(-4, 0, 0), vec3(0, -4, 0), white));
-  world.add(
-      make_shared<tri>(point3(3, 2, 5), vec3(0, 0, -4), vec3(0, -4, 0), white));
-  world.add(
-      make_shared<tri>(point3(2, 3, 5), vec3(-4, 0, 0), vec3(0, 0, -4), white));
-  world.add(
-      make_shared<tri>(point3(2, -3, 1), vec3(-4, 0, 0), vec3(0, 0, 4), white));
+  world.add(make_shared<tri>(point3(-3, 2, 1), vec3(0, 0, 4), vec3(0, -4, 0), white));
+  world.add(make_shared<tri>(point3(2, 2, 0), vec3(-4, 0, 0), vec3(0, -4, 0), white));
+  world.add(make_shared<tri>(point3(3, 2, 5), vec3(0, 0, -4), vec3(0, -4, 0), white));
+  world.add(make_shared<tri>(point3(2, 3, 5), vec3(-4, 0, 0), vec3(0, 0, -4), white));
+  world.add(make_shared<tri>(point3(2, -3, 1), vec3(-4, 0, 0), vec3(0, 0, 4), white));
 
   camera cam;
 
