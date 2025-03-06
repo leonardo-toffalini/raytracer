@@ -17,12 +17,9 @@ private:
 public:
   solid_color(color albedo) : albedo(albedo) {}
 
-  solid_color(double red, double green, double blue)
-      : solid_color(color(red, green, blue)) {}
+  solid_color(double red, double green, double blue) : solid_color(color(red, green, blue)) {}
 
-  color value(double u, double v, const point3 &p) const override {
-    return albedo;
-  }
+  color value(double u, double v, const point3 &p) const override { return albedo; }
 };
 
 class checker_texture : public texture {
@@ -32,13 +29,11 @@ private:
   shared_ptr<texture> odd;
 
 public:
-  checker_texture(double scale, shared_ptr<texture> even,
-                  shared_ptr<texture> odd)
+  checker_texture(double scale, shared_ptr<texture> even, shared_ptr<texture> odd)
       : inv_scale(1.0 / scale), even(even), odd(odd) {}
 
   checker_texture(double scale, const color &c1, const color &c2)
-      : checker_texture(scale, make_shared<solid_color>(c1),
-                        make_shared<solid_color>(c2)) {}
+      : checker_texture(scale, make_shared<solid_color>(c1), make_shared<solid_color>(c2)) {}
 
   color value(double u, double v, const point3 &p) const override {
     int x_int = int(std::floor(inv_scale * p.x()));
@@ -72,7 +67,6 @@ public:
     auto pixel = image.pixel_data(i, j);
 
     auto color_scale = 1.0 / 255.0;
-    return color(color_scale * pixel[0], color_scale * pixel[1],
-                 color_scale * pixel[2]);
+    return color(color_scale * pixel[0], color_scale * pixel[1], color_scale * pixel[2]);
   }
 };

@@ -13,8 +13,7 @@ private:
   double D;
 
 public:
-  quad(const point3 &Q, const vec3 &u, const vec3 &v, shared_ptr<material> mat)
-      : Q(Q), u(u), v(v), mat(mat) {
+  quad(const point3 &Q, const vec3 &u, const vec3 &v, shared_ptr<material> mat) : Q(Q), u(u), v(v), mat(mat) {
     vec3 n = cross(u, v);
     normal = unit_vector(n);
     D = dot(normal, Q);
@@ -70,6 +69,7 @@ public:
   }
 };
 
+<<<<<<< HEAD
 class tri : public hittable {
 private:
   point3 Q;
@@ -149,3 +149,24 @@ public:
     return (a + b) <= 1 && a >= 0 && b >= 0;
   }
 };
+=======
+inline shared_ptr<hittable_list> box(const point3 &a, const point3 &b, shared_ptr<material> mat) {
+  auto sides = make_shared<hittable_list>();
+
+  auto min = point3(std::fmin(a.x(), b.x()), std::fmin(a.y(), b.y()), std::fmin(a.z(), b.z()));
+  auto max = point3(std::fmax(a.x(), b.x()), std::fmax(a.y(), b.y()), std::fmax(a.z(), b.z()));
+
+  auto dx = vec3(max.x() - min.x(), 0, 0);
+  auto dy = vec3(0, max.y() - min.y(), 0);
+  auto dz = vec3(0, 0, max.z() - min.z());
+
+  sides->add(make_shared<quad>(point3(min.x(), min.y(), max.z()), dx, dy, mat));  // front
+  sides->add(make_shared<quad>(point3(max.x(), min.y(), max.z()), -dz, dy, mat)); // right
+  sides->add(make_shared<quad>(point3(max.x(), min.y(), min.z()), -dx, dy, mat)); // back
+  sides->add(make_shared<quad>(point3(min.x(), min.y(), min.z()), dz, dy, mat));  // left
+  sides->add(make_shared<quad>(point3(min.x(), max.y(), max.z()), dx, -dz, mat)); // top
+  sides->add(make_shared<quad>(point3(min.x(), min.y(), min.z()), dx, dz, mat));  // bottom
+
+  return sides;
+}
+>>>>>>> 7d60cf9c0a1a055157925f6874a68fe11b941a0a
