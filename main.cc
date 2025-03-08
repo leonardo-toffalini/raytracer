@@ -541,24 +541,34 @@ void teapot() {
   auto light = make_shared<diffuse_light>(color(15, 15, 15));
   auto glass = make_shared<dielectric>(1.5);
 
-  world.add(make_shared<quad>(point3(555, 0, 0), vec3(0, 555, 0), vec3(0, 0, 555), green));
-  world.add(make_shared<quad>(point3(0, 0, 0), vec3(0, 555, 0), vec3(0, 0, 555), red));
+  // world.add(make_shared<quad>(point3(555, 0, 0), vec3(0, 555, 0), vec3(0, 0, 555), green));
+  // world.add(make_shared<quad>(point3(0, 0, 0), vec3(0, 555, 0), vec3(0, 0, 555), red));
   world.add(make_shared<quad>(point3(343, 554, 332), vec3(-130, 0, 0), vec3(0, 0, -105), light));
-  world.add(make_shared<quad>(point3(0, 0, 0), vec3(555, 0, 0), vec3(0, 0, 555), white));
-  world.add(make_shared<quad>(point3(555, 555, 555), vec3(-555, 0, 0), vec3(0, 0, -555), white));
-  world.add(make_shared<quad>(point3(0, 0, 555), vec3(555, 0, 0), vec3(0, 555, 0), white));
+  // world.add(make_shared<quad>(point3(0, 0, 0), vec3(555, 0, 0), vec3(0, 0, 555), white));
+  // world.add(make_shared<quad>(point3(555, 555, 555), vec3(-555, 0, 0), vec3(0, 0, -555), white));
+  // world.add(make_shared<quad>(point3(0, 0, 555), vec3(555, 0, 0), vec3(0, 555, 0), white));
 
-  // shared_ptr<hittable> teapot = read_obj("teapot.obj", white);
-  // // teapot = make_shared<rotate_y>(teapot, 15);
-  // teapot = make_shared<translate>(teapot, vec3(265, 0, 295));
-  // world.add(teapot);
+  shared_ptr<hittable> teapot = read_obj("cube.obj", light);
+  // teapot = make_shared<rotate_y>(teapot, 15);
+  teapot = make_shared<scale>(teapot, 100);
+  teapot = make_shared<translate>(teapot, vec3(10, 10, 10));
+  // std::clog << teapot->bounding_box().x.min << std::endl;
+  // std::clog << teapot->bounding_box().x.max << std::endl;
+  // std::clog << teapot->bounding_box().y.min << std::endl;
+  // std::clog << teapot->bounding_box().y.max << std::endl;
+  // std::clog << teapot->bounding_box().z.min << std::endl;
+  // std::clog << teapot->bounding_box().z.max << std::endl;
+  world.add(teapot);
+
+  // world.add(make_shared<quad>(point3(0, 0, 0), vec3(0, 555, 0), vec3(0, 0, 555), red));
+  // world.add(make_shared<tri>(point3(555, 0, 0), vec3(0, 555, 0), vec3(0, 0, 555), green));
 
   camera cam;
 
   cam.aspect_ratio = 1.0;
   cam.image_width = 400;
-  cam.samples_per_pixel = 10;
-  cam.max_depth = 10;
+  cam.samples_per_pixel = 100;
+  cam.max_depth = 50;
   cam.background = color(0, 0, 0);
 
   cam.vfov = 40;

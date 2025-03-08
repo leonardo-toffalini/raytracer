@@ -1,25 +1,25 @@
 #pragma once
 
 #include "rt_common.h"
-#include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <strstream>
+#include <sstream>
 
-shared_ptr<hittable_list> read_obj(std::string filePath, shared_ptr<material> mat) {
+shared_ptr<hittable_list> read_obj(std::string file_path, shared_ptr<material> mat) {
   auto sides = make_shared<hittable_list>();
 
   std::vector<vec3> verts;
-  std::ifstream f(filePath);
-  if (!f.is_open())
+  std::ifstream f = std::ifstream(file_path);
+  if (!f.is_open()) {
+    std::clog << "Unable to open " << file_path << std::endl;
     return sides;
+  }
 
   while (!f.eof()) {
     char line[128];
     f.getline(line, 128);
 
-    std::strstream s;
-    s << line;
+    auto s = std::istringstream(line);
 
     char temp;
 
@@ -33,7 +33,9 @@ shared_ptr<hittable_list> read_obj(std::string filePath, shared_ptr<material> ma
     if (line[0] == 'f') {
       int face[3];
       s >> temp >> face[0] >> face[1] >> face[2];
-      auto t = make_shared<tri>(verts[face[0] - 1], verts[face[1] - 1], verts[face[2] - 1], mat);
+      std::vector<vec3> corners = {verts[face[0] - 1], verts[face[1] - 1], verts[face[2] - 1]};
+      auto t = make_shared<tri>(corners[0], corners[1], corners[2], mat);
+      // std::clog << "(" << corners[0] << ") (" << corners[1] << ") (" << corners[2] << ")\n";
       sides->add(t);
     }
   }

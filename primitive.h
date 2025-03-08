@@ -86,7 +86,7 @@ public:
       : primitive(A, B - A, C - A, mat) {}
 
   bool is_interior(double a, double b, hit_record &rec) const override {
-    if ((a + b) > 1 && a < 0 && b < 0)
+    if ((a + b) > 1 || a < 0 || b < 0)
       return false;
 
     rec.u = a;

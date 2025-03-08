@@ -44,12 +44,38 @@ public:
   aabb bounding_box() const override { return bbox; }
 
   bool hit(const ray &r, interval ray_t, hit_record &rec) const override {
-    ray offset_r(r.origin() - offset, r.direction());
+    ray offset_r = ray(r.origin() - offset, r.direction());
 
     if (!object->hit(offset_r, ray_t, rec))
       return false;
 
     rec.p += offset;
+    return true;
+  }
+};
+
+class scale : public hittable {
+private:
+  shared_ptr<hittable> object;
+  const double scale_factor;
+  const double inv_scale_factor;
+  aabb bbox;
+
+public:
+  scale(shared_ptr<hittable> object, const double scale_factor)
+      : object(object), scale_factor(scale_factor), inv_scale_factor(1.0 / scale_factor) {
+    bbox = scale_factor * object->bounding_box();
+  }
+
+  aabb bounding_box() const override { return bbox; }
+
+  bool hit(const ray &r, interval ray_t, hit_record &rec) const override {
+    ray scaled_r = ray(inv_scale_factor * r.origin(), r.direction());
+
+    if (!object->hit(scaled_r, ray_t, rec))
+      return false;
+
+    rec.p *= scale_factor;
     return true;
   }
 };
@@ -109,15 +135,11 @@ public:
       return false;
 
     // Object space -> world space
-    rec.p = point3(
-      cos_theta * rec.p.x() + sin_theta * rec.p.z(),
-      rec.p.y(),
-      -sin_theta * rec.p.x() + cos_theta * rec.p.z());
+    rec.p = point3(cos_theta * rec.p.x() + sin_theta * rec.p.z(), rec.p.y(),
+                   -sin_theta * rec.p.x() + cos_theta * rec.p.z());
 
-    rec.normal = vec3(
-      cos_theta * rec.normal.x() + sin_theta * rec.normal.z(),
-      rec.normal.y(),
-      -sin_theta * rec.normal.x() + cos_theta * rec.normal.z());
+    rec.normal = vec3(cos_theta * rec.normal.x() + sin_theta * rec.normal.z(), rec.normal.y(),
+                      -sin_theta * rec.normal.x() + cos_theta * rec.normal.z());
 
     return true;
   }

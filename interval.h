@@ -39,3 +39,7 @@ interval operator+(const interval &ival, double displacement) {
 }
 
 interval operator+(double displacement, const interval &ival) { return ival + displacement; }
+
+interval operator*(const double scale, const interval &ival) { return interval(scale * ival.min, scale * ival.max); }
+
+interval operator*(const interval &ival, const double scale) { return scale * ival; }
