@@ -34,7 +34,7 @@ shared_ptr<hittable_list> read_obj(std::string file_path, shared_ptr<material> m
       int face[3];
       s >> temp >> face[0] >> face[1] >> face[2];
       std::vector<vec3> corners = {verts[face[0] - 1], verts[face[1] - 1], verts[face[2] - 1]};
-      auto t = make_shared<tri>(corners[0], corners[1], corners[2], mat);
+      auto t = make_shared<tri>(corners[0], corners[1], corners[2], mat, 0);
       // std::clog << "(" << corners[0] << ") (" << corners[1] << ") (" << corners[2] << ")\n";
       sides->add(t);
     }

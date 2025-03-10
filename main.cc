@@ -24,9 +24,10 @@ void cornell_box_with_boxes();
 void cornell_smoke();
 void second_cover(int image_width, int samples_per_pixel, int max_depth);
 void teapot();
+void test();
 
 int main(void) {
-  switch (13) {
+  switch (14) {
   case 1:
     first_cover();
     break;
@@ -65,6 +66,9 @@ int main(void) {
     break;
   case 13:
     teapot();
+    break;
+  case 14:
+    test();
     break;
   }
 }
@@ -574,6 +578,39 @@ void teapot() {
   cam.vfov = 40;
   cam.lookfrom = point3(278, 278, -800);
   cam.lookat = point3(278, 278, 0);
+  cam.vup = vec3(0, 1, 0);
+
+  cam.defocus_angle = 0;
+
+  cam.render(world);
+}
+
+void test() {
+  hittable_list world;
+
+  auto red = make_shared<lambertian>(color(.65, .05, .05));
+  auto white = make_shared<lambertian>(color(.73, .73, .73));
+  auto green = make_shared<lambertian>(color(.12, .45, .15));
+  auto light = make_shared<diffuse_light>(color(15, 15, 15));
+  auto glass = make_shared<dielectric>(1.5);
+
+  world.add(make_shared<quad>(point3(-3, 10, -3), vec3(6, 0, 0), vec3(0, 0, 6), light));
+  world.add(make_shared<quad>(point3(-4, 0, 2), vec3(8, 0, 0), vec3(0, 0, -8), green));
+
+  shared_ptr<hittable> triangle = read_obj("teapot.obj", white);
+  world.add(triangle);
+
+  camera cam;
+
+  cam.aspect_ratio = 1.0;
+  cam.image_width = 800;
+  cam.samples_per_pixel = 500;
+  cam.max_depth = 50;
+  cam.background = color(0, 0, 0);
+
+  cam.vfov = 40;
+  cam.lookfrom = point3(-2, 10, 10);
+  cam.lookat = point3(0, 0, 0);
   cam.vup = vec3(0, 1, 0);
 
   cam.defocus_angle = 0;
