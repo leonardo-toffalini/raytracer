@@ -26,8 +26,8 @@ void second_cover(int image_width, int samples_per_pixel, int max_depth);
 void teapot();
 void test();
 
-int main(void) {
-  switch (1) {
+int main(int argc, char *argv[]) {
+  switch (std::stoi(argv[1])) {
   case 1:
     first_cover();
     break;
