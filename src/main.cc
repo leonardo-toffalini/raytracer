@@ -27,7 +27,7 @@ void teapot();
 void test();
 
 int main(void) {
-  switch (14) {
+  switch (1) {
   case 1:
     first_cover();
     break;
