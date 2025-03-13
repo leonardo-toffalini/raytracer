@@ -597,8 +597,9 @@ void test() {
   world.add(make_shared<quad>(point3(-3, 10, -3), vec3(6, 0, 0), vec3(0, 0, 6), light));
   world.add(make_shared<quad>(point3(-4, 0, 2), vec3(8, 0, 0), vec3(0, 0, -8), green));
 
-  shared_ptr<hittable> triangle = read_obj("teapot.obj", white);
-  world.add(triangle);
+  shared_ptr<hittable> object = read_obj("resources/teapot.obj", white);
+  object = make_shared<translate>(object, vec3(0, 0, -2));
+  world.add(object);
 
   camera cam;
 
